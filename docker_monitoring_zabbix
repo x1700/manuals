@@ -1,3 +1,0 @@
-usermod -aG docker zabbix
-apt install acl
-setfacl --modify user:zabbix:rw /var/run/docker.sock
