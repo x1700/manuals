@@ -4,7 +4,7 @@ docker run --name postgres-server -t \
        -e POSTGRES_USER="zabbix" \
        -e POSTGRES_PASSWORD="zabbix_password" \
        -e POSTGRES_DB="zabbix" \
-	   -v /data/postgresql/:/var/lib/postgresql/data \
+       -v /data/postgresql/:/var/lib/postgresql/data \
        --network=zabbix-net \
        --restart unless-stopped \
        -d postgres:latest
@@ -23,22 +23,22 @@ docker run --name zabbix-server-pgsql -t \
        -e POSTGRES_PASSWORD="zabbix_password" \
        -e POSTGRES_DB="zabbix" \
        -e ZBX_ENABLE_SNMP_TRAPS="true" \
-	   -e ZBX_CACHESIZE="512M" \
+       -e ZBX_CACHESIZE="512M" \
        --network=zabbix-net \
        -p 10051:10051 \
        --volumes-from zabbix-snmptraps \
-	   --restart unless-stopped \
+       --restart unless-stopped \
        -d zabbix/zabbix-server-pgsql:alpine-6.4-latest
 	   
 docker run --name zabbix-web-nginx-pgsql -t \
        -e ZBX_SERVER_HOST="zabbix-server-pgsql" \
        -e DB_SERVER_HOST="postgres-server" \
-	   -e POSTGRES_USER="zabbix" \
-	   -e POSTGRES_PASSWORD="zabbix_password" \
-	   -e POSTGRES_DB="zabbix" \
-	   --network=zabbix-net \
-	   -p 443:8443 \
-	   -p 80:8080  \
-	   -v /etc/ssl/nginx:/etc/ssl/nginx:ro \
-	   --restart unless-stopped \
-	   -d zabbix/zabbix-web-nginx-pgsql:alpine-6.4-latest
+       -e POSTGRES_USER="zabbix" \
+       -e POSTGRES_PASSWORD="zabbix_password" \
+       -e POSTGRES_DB="zabbix" \
+       --network=zabbix-net \
+       -p 443:8443 \
+       -p 80:8080  \
+       -v /etc/ssl/nginx:/etc/ssl/nginx:ro \
+       --restart unless-stopped \
+       -d zabbix/zabbix-web-nginx-pgsql:alpine-6.4-latest
